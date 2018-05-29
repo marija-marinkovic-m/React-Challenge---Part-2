@@ -1,18 +1,51 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import makeCancelable from './util/makePromiseCancelable';
+import List from './components/List';
 
-class App extends Component {
+import 'whatwg-fetch';
+
+class App extends React.Component {
+  _promise = null;
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      data: null,
+      error: null
+    }
+  }
+  componentDidMount() {
+    this._promise = makeCancelable(
+      fetch('https://api.myjson.com/bins/18x6yt')
+    );
+    this.setState({
+      isLoading: true
+    }, () => {
+      this._promise
+        .promise
+        .then(response => {
+          if (response.ok) {
+            return response.json()
+          } else {
+            throw new Error('Something went wrong...');
+          }
+        })
+        .then(data => this.setState({data, isLoading: false}))
+        .catch(error => this.setState({error, isLoading: false}));
+    });
+  }
+
+  componentWillUnmount() {
+    this._promise && this._promise.cancel();
+  }
+
   render() {
+    const { error, isLoading, data } = this.state;
+    if (error) return <p>{error.message}</p>;
+    if (isLoading) return 'Loading...';
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <List items={data} />
       </div>
     );
   }
