@@ -3,7 +3,7 @@
 import 'whatwg-fetch';
 import makeCancelable from '../../util/makePromiseCancelable';
 
-const API_BASE = 'https://api.myjson.com/bins';
+import { API_BASE } from '../../constants';
 
 const Api = {
   fetchResults(url) {

@@ -7,8 +7,7 @@ import sortBy from './util/sortBy';
 import throttle from './util/throttle';
 import styled from 'styled-components';
 
-
-const DEFAULT_PER_PAGE = 4;
+import { DEFAULT_PER_PAGE, DELAY_FOR_MIMICKING } from './constants';
 
 const Placeholder = styled.div`
   max-width: 860px;
@@ -85,13 +84,13 @@ class App extends React.Component {
       this.setState({
         isLoading: true
       }, () => {
-        // set small timeout to mimic waiting for API response
+        // @TEMP: set small timeout to mimic waiting for API response
         setTimeout(() => {
           this.setState({
             loadedData: this.state.data.slice(0, totalLoadedCount),
             isLoading: false
           });
-        }, 700);
+        }, DELAY_FOR_MIMICKING);
       });
       
     }

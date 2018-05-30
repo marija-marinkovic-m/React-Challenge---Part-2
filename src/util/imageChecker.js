@@ -1,3 +1,5 @@
+import { DELAY_FOR_MIMICKING } from "../constants";
+
 const _images = {};
 
 const imageChecker = (url, cache = false) => {
@@ -11,10 +13,10 @@ const imageChecker = (url, cache = false) => {
       const data = {url, width: image.width, height: image.height};
       if (cache) _images[url] = data;
 
-      // mimic image response
+      // @TEMP: mimic image response
       setTimeout(() => {
         resolve(data);
-      }, 700);
+      }, DELAY_FOR_MIMICKING);
       // return resolve(data);
     };
 
