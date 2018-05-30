@@ -1,7 +1,7 @@
 import React from 'react';
 import List from './components/List';
 import Api from './core/api/service';
-import Filter from './components/Filter';
+import Filter from './components/FilterDropdown';
 import sortBy from './util/sortBy';
 import styled from 'styled-components';
 
@@ -9,7 +9,11 @@ const DEFAULT_PER_PAGE = 4;
 
 const Placeholder = styled.div`
   max-width: 860px;
-  margin: 20px auto 60px;
+  margin: 20px auto 60px; padding: 12px;
+`;
+
+const FiltersWrap = styled.div`
+  text-align: right;
 `;
 
 const sortByOptions = [
@@ -85,12 +89,14 @@ class App extends React.Component {
     if (isLoading) return 'Loading...';
     return (
       <Placeholder>
-        <Filter
-          label="Sort by"
-          items={sortByOptions}
-          value={sortParam}
-          onChange={this.handleFilterSort}
-        />
+        <FiltersWrap>
+          <Filter
+            label="Sort by"
+            items={sortByOptions}
+            value={sortParam}
+            onChange={this.handleFilterSort}
+          />
+        </FiltersWrap>
         <List items={loadedData} />
       </Placeholder>
     );

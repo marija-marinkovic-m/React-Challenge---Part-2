@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 const Wrap = styled.ul`
   display: flex; flex-direction: column;
-  margin: 0; padding: 0 12px;
+  margin: 0; padding: 20px 0;
   list-style: none;
 
   @media (max-width: 768px) {
