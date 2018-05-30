@@ -2,8 +2,11 @@ import React from 'react';
 import List from './components/List';
 import Api from './core/api/service';
 import Filter from './components/FilterDropdown';
+import Loader from './components/Loader';
 import sortBy from './util/sortBy';
+import throttle from './util/throttle';
 import styled from 'styled-components';
+
 
 const DEFAULT_PER_PAGE = 4;
 
@@ -14,6 +17,7 @@ const Placeholder = styled.div`
 
 const FiltersWrap = styled.div`
   text-align: right;
+  display: ${({canFilter}) => canFilter ? 'block' : 'none'};
 `;
 
 const sortByOptions = [
@@ -23,8 +27,12 @@ const sortByOptions = [
   {prop: 'Shortest tour first', val: 'length'}
 ];
 
+const lazyLoaderListener = ['resize', 'scroll'];
+
 class App extends React.Component {
   _promise = null;
+  _throttleScroll;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -32,8 +40,10 @@ class App extends React.Component {
       data: null,
       error: null,
       loadedData: [],
-      sortParam: 'price'
+      sortParam: 'price',
+      loadMore: false
     }
+    this._throttleScroll = throttle(this.handleOnScroll, 300, this);
   }
   componentDidMount() {
     this._promise = Api.fetchResults('18x6yt');
@@ -41,29 +51,56 @@ class App extends React.Component {
       isLoading: true
     }, () => {
       this._promise.promise
-        // .then(response => {
-        //   if (response.ok) {
-        //     return response.json();
-        //   } else {
-        //     throw new Error('Something went wrong...');
-        //   }
-        // })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Something went wrong...');
+          }
+        })
         .then(data => this.setState({
           ...this.handleSortData(data),
           isLoading: false
         }))
         .catch(error => this.setState({error, isLoading: false}));
     });
+
+    lazyLoaderListener
+      .map(ev => window.addEventListener(ev, this._throttleScroll));
+
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.sortParam !== this.state.sortParam) {
       this.setState({...this.handleSortData(this.state.data)});
     }
+    if (
+      prevState.loadMore !== this.state.loadMore
+      && this.state.loadMore
+      && this.state.data
+      && this.state.data.length !== this.state.loadedData.length
+    ) {
+      const totalLoadedCount = this.state.loadedData.length + DEFAULT_PER_PAGE;
+
+      this.setState({
+        isLoading: true
+      }, () => {
+        // set small timeout to mimic waiting for API response
+        setTimeout(() => {
+          this.setState({
+            loadedData: this.state.data.slice(0, totalLoadedCount),
+            isLoading: false
+          });
+        }, 700);
+      });
+      
+    }
   }
 
   componentWillUnmount() {
     this._promise && this._promise.cancel();
+    lazyLoaderListener
+      .map(ev => window.removeEventListener(ev, this._throttleScroll));
   }
 
   handleFilterSort = (e) => {
@@ -83,13 +120,21 @@ class App extends React.Component {
     };
   }
 
+  handleOnScroll = () => {
+    const docEl = document.documentElement;
+    const offset = docEl.scrollTop + window.innerHeight;
+    const height = docEl.offsetHeight;
+
+    this.setState({loadMore: offset === height});
+  }
+
   render() {
     const { error, isLoading, loadedData, sortParam } = this.state;
     if (error) return <p>{error.message}</p>;
-    if (isLoading) return 'Loading...';
     return (
       <Placeholder>
-        <FiltersWrap>
+        <FiltersWrap
+          canFilter={Boolean(loadedData.length)}>
           <Filter
             label="Sort by"
             items={sortByOptions}
@@ -98,6 +143,8 @@ class App extends React.Component {
           />
         </FiltersWrap>
         <List items={loadedData} />
+
+        { isLoading && <Loader /> }
       </Placeholder>
     );
   }

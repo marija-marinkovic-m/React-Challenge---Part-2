@@ -1,6 +1,6 @@
 const _images = {};
 
-const imageChecker = (url, cache = true) => {
+const imageChecker = (url, cache = false) => {
   return new Promise((resolve, reject) => {
     if (_images[url]) return resolve(_images[url]);
 
@@ -11,7 +11,11 @@ const imageChecker = (url, cache = true) => {
       const data = {url, width: image.width, height: image.height};
       if (cache) _images[url] = data;
 
-      return resolve(data);
+      // mimic image response
+      setTimeout(() => {
+        resolve(data);
+      }, 700);
+      // return resolve(data);
     };
 
     image.onerror = (err) => {

@@ -34,14 +34,18 @@ const Figure = styled.figure`
   margin: 0;
   a {
     display: block;
-    img {
-      display: block;
-      max-width: 100%; height: auto;
-    }
+    overflow: hidden;
     &:last-child {
       margin-top: 4px;
     }
   }
+`;
+
+const Img = styled.img`
+  display: block;
+  width: 100%; height: auto;
+  filter: ${({blur}) => blur ? 'blur(5px)' : 'blur(0)'};
+  transition: filter 500ms ease-in;
 `;
 
 
@@ -66,14 +70,37 @@ const TourName = styled.h4`
 
 const Card = ({item}) => {
   const formated = normalizeSearchResult(item);
+
+  // create placeholder images (this should be served in API response)
+  const tourImagePlacehoder = item.tour_image && item.tour_image.replace('928x680', '12x9');
+  const mapImagePlaceholder = item.map_image && item.map_image.replace('928x400', '12x5');
+
   return (
     <React.Fragment>
 
       <MainArticle>
 
         <Figure>
-          <ImagePreload src={formated.tour_image} render={src => <a href="#offer"><img src={src} alt={formated.tour_name} /></a>} />
-          <ImagePreload src={formated.map_image} render={src => <a href="#offer"><img src={src} alt={formated.tour_name + ' map'} /></a>} />
+          <ImagePreload
+            src={formated.tour_image}
+            placeholderSrc={tourImagePlacehoder}
+            render={(src, isPlaceholder) => <a href="#offer">
+              <Img
+                blur={isPlaceholder}
+                src={src}
+                alt={formated.tour_name}
+              />
+            </a>} />
+          <ImagePreload
+            src={formated.map_image}
+            placeholderSrc={mapImagePlaceholder}
+            render={(src, isPlaceholder) => <a href="#offer">
+              <Img
+                blur={isPlaceholder}
+                src={src}
+                alt={formated.tour_name + ' map'}
+              />
+            </a>} />
         </Figure>
 
         <Description>
