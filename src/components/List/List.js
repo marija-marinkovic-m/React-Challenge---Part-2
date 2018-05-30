@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card, { ItemShape } from './Card';
+import Card from './Card';
+
+import { NormalizedSearchResultShape } from '../../core/api/normalizers';
 
 const List = ({items}) => (
   !items || !items.length ? null : (<ul>{
@@ -9,7 +11,7 @@ const List = ({items}) => (
 );
 
 List.propTypes = {
-  list: PropTypes.shape(ItemShape)
+  list: PropTypes.arrayOf(NormalizedSearchResultShape)
 }
 
 export default List;

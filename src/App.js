@@ -1,8 +1,7 @@
 import React from 'react';
-import makeCancelable from './util/makePromiseCancelable';
 import List from './components/List';
-
-import 'whatwg-fetch';
+import Api from './core/api/service';
+import { normalizeSearchResult } from './core/api/normalizers';
 
 class App extends React.Component {
   _promise = null;
@@ -11,26 +10,28 @@ class App extends React.Component {
     this.state = {
       isLoading: false,
       data: null,
-      error: null
+      error: null,
+      loadedData: []
     }
   }
   componentDidMount() {
-    this._promise = makeCancelable(
-      fetch('https://api.myjson.com/bins/18x6yt')
-    );
+    this._promise = Api.fetchResults('18x6yt');
     this.setState({
       isLoading: true
     }, () => {
-      this._promise
-        .promise
+      this._promise.promise
         .then(response => {
           if (response.ok) {
-            return response.json()
+            return response.json();
           } else {
             throw new Error('Something went wrong...');
           }
         })
-        .then(data => this.setState({data, isLoading: false}))
+        .then(data => this.setState({
+          data,
+          loadedData: data && data.length ? data.slice(0,1).map(normalizeSearchResult) : [],
+          isLoading: false
+        }))
         .catch(error => this.setState({error, isLoading: false}));
     });
   }
@@ -40,12 +41,14 @@ class App extends React.Component {
   }
 
   render() {
-    const { error, isLoading, data } = this.state;
+    const { error, isLoading, loadedData } = this.state;
     if (error) return <p>{error.message}</p>;
     if (isLoading) return 'Loading...';
     return (
       <div className="App">
-        <List items={data} />
+        <List items={loadedData} />
+
+        <pre>{JSON.stringify(loadedData)}</pre>
       </div>
     );
   }
