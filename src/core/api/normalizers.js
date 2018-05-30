@@ -37,11 +37,20 @@ export const NormalizedSearchResultShape = PropTypes.shape({
   currency: PropTypes.string,
   meta: ItemMetaShape,
   tour_image: PropTypes.string,
-  map_image: PropTypes.string
+  tour_image_placeholder: PropTypes.string,
+  map_image: PropTypes.string,
+  map_image_placeholder: PropTypes.string
 });
 
-export const normalizeSearchResult = ({ destinations, age_from, age_to, tour_operator, country, ...otherRawData }) => {
+export const normalizeSearchResult = ({ destinations, age_from, age_to, tour_operator, country, tour_image, map_image, ...otherRawData }) => {
+
+  // @TEMP: create placeholder images (this should be served in API response)
+  const tour_image_placeholder = tour_image && tour_image.replace('928x680', '12x9');
+  const map_image_placeholder = map_image && map_image.replace('928x400', '12x5');
+
   return Object.assign({}, otherRawData, {
+    tour_image, map_image,
+    tour_image_placeholder, map_image_placeholder,
     meta: {
       destinations,
       'starts/ends in': country + ' / ' + country,

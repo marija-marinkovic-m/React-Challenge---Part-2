@@ -1,18 +1,22 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+// inspired by https://github.com/n49/react-stars
+// kudos https://github.com/n49
 
-const parentStyles = {
-  overflow: 'hidden',
-  position: 'relative'
-}
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-const defaultStyles = {
-  position: 'relative',
-  overflow: 'hidden',
-  cursor: 'pointer',
-  display: 'block',
-  float: 'left'
-}
+const Star = styled.span`
+  position: relative;
+  display: block; float: left;
+  overflow: hidden;
+  cursor: ${({isEdit}) => isEdit ? 'pointer' : 'default'};
+  font-size: ${({size}) => `${size}px`};
+  color: ${({color}) => color};
+`;
+const Wrapper = styled.div`
+  position: relative;
+  overflow: hidden;
+`;
 
 const getHalfStarStyles = (color, uniqueness) => {
   return `
@@ -28,7 +32,7 @@ const getHalfStarStyles = (color, uniqueness) => {
   }`
 }
 
-class RatingStars extends Component {
+class RatingStars extends React.Component {
 
   constructor(props) {
 
@@ -189,15 +193,12 @@ class RatingStars extends Component {
       if (half && !halfStar.hidden && halfStar.at === i) {
         starClass = `react-stars-${uniqueness}`
       }
-      const style = Object.assign({}, defaultStyles, {
-        color: star.active ? color2 : color1,
-        cursor: edit ? 'pointer' : 'default',
-        fontSize: `${size}px`
-      })
       return (
-        <span
+        <Star
           className={starClass}
-          style={style}
+          color={star.active ? color2 : color1}
+          isEdit={edit}
+          size={size}
           key={i}
           data-index={i}
           data-forhalf={char}
@@ -206,7 +207,7 @@ class RatingStars extends Component {
           onMouseLeave={this.mouseLeave.bind(this)}
           onClick={this.clicked.bind(this)}>
           {char}
-        </span>
+        </Star>
       )
     })
   }
@@ -218,11 +219,11 @@ class RatingStars extends Component {
     } = this.props
 
     return (
-      <div className={className} style={parentStyles}>
+      <Wrapper className={className}>
         {this.state.config.half ?
           this.renderHalfStarStyleElement() : ''}
         {this.renderStars()}
-      </div>
+      </Wrapper>
     )
   }
 

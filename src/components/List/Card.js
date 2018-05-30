@@ -52,14 +52,10 @@ const Img = styled.img`
 const Description = styled.div`
   margin: 0;
   padding: 16px 20px 0;
-  p {
-    margin: 0 0 7px;
-  }
 `;
-const RatingWrap = styled.div`
+const Param = styled.div`
   margin: 0 0 7px;
 `;
-
 const TourName = styled.h4`
   margin: 0 0 3px; padding: 0;
   font-size: 18px; font-weight: 700; line-height: 23px;
@@ -73,20 +69,14 @@ const TourName = styled.h4`
 
 const Card = ({item}) => {
   const formated = normalizeSearchResult(item);
-
-  // @TEMP: create placeholder images (this should be served in API response)
-  const tourImagePlacehoder = item.tour_image && item.tour_image.replace('928x680', '12x9');
-  const mapImagePlaceholder = item.map_image && item.map_image.replace('928x400', '12x5');
-
   return (
     <React.Fragment>
 
       <MainArticle>
-
         <Figure>
           <ImagePreload
             src={formated.tour_image}
-            placeholderSrc={tourImagePlacehoder}
+            placeholderSrc={formated.tour_image_placeholder}
             render={(src, isPlaceholder) => <a href="#offer">
               <Img
                 blur={isPlaceholder}
@@ -96,7 +86,7 @@ const Card = ({item}) => {
             </a>} />
           <ImagePreload
             src={formated.map_image}
-            placeholderSrc={mapImagePlaceholder}
+            placeholderSrc={formated.map_image_placeholder}
             render={(src, isPlaceholder) => <a href="#offer">
               <Img
                 blur={isPlaceholder}
@@ -108,19 +98,16 @@ const Card = ({item}) => {
 
         <Description>
           <TourName><a href="#offer">{formated.tour_name}</a></TourName>
-          <RatingWrap><Rating value={formated.rating} /></RatingWrap>
-          <p>{formated.description}</p>
-
+          <Param><Rating value={formated.rating} /></Param>
+          <Param>{formated.description}</Param>
           <DataList data={formated.meta} />
-
         </Description>
-
-
       </MainArticle>
 
       <PricingMeta>
         <PricingGrid data={formated} />
       </PricingMeta>
+
     </React.Fragment>
   );
 };

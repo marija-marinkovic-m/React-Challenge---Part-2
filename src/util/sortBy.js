@@ -1,6 +1,6 @@
 function sortBy(field, reverse, primer) {
 
-  var key = primer ?
+  const key = primer ?
     function (x) { return primer(x[field]) } :
     function (x) { return x[field] };
 
