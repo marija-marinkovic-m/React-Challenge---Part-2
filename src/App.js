@@ -1,6 +1,12 @@
 import React from 'react';
 import List from './components/List';
 import Api from './core/api/service';
+import styled from 'styled-components';
+
+const Placeholder = styled.div`
+  max-width: 860px;
+  margin: 20px auto;
+`;
 
 class App extends React.Component {
   _promise = null;
@@ -28,7 +34,7 @@ class App extends React.Component {
         // })
         .then(data => this.setState({
           data,
-          loadedData: data && data.length ? data.slice(0,1) : [],
+          loadedData: data && data.length ? data.slice(0,4) : [],
           isLoading: false
         }))
         .catch(error => this.setState({error, isLoading: false}));
@@ -44,9 +50,9 @@ class App extends React.Component {
     if (error) return <p>{error.message}</p>;
     if (isLoading) return 'Loading...';
     return (
-      <div className="App">
+      <Placeholder>
         <List items={loadedData} />
-      </div>
+      </Placeholder>
     );
   }
 }

@@ -6,6 +6,9 @@ import getSymbol from 'currency-symbol-map';
 
 const MainWrap = styled.div`
   padding: 16px 20px 0 0;
+  @media (max-width: 768px) {
+    padding: 16px 20px 20px;
+  }
 `
 
 const FlexWrap = styled.div`

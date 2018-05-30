@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { normalizeSearchResult, RawItemShape } from '../../core/api/normalizers';
@@ -17,10 +16,18 @@ const MainArticle = styled.article`
   & > :last-child {
     width: 62%;
   }
+
+  @media (max-width: 768px) {
+    width: 100%; flex-direction: column;
+    & > * {width: 100% !important;}
+  }
 `;
 const PricingMeta = styled.div`
   width: 28%;
   text-align: center;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Figure = styled.figure`
@@ -36,6 +43,8 @@ const Figure = styled.figure`
     }
   }
 `;
+
+
 const Description = styled.div`
   margin: 0;
   padding: 16px 20px 0;
@@ -55,18 +64,10 @@ const TourName = styled.h4`
   }
 `;
 
-const Card = ({component, item}) => {
+const Card = ({item}) => {
   const formated = normalizeSearchResult(item);
-  const Component = styled(component)`
-    display: flex; justify-content: space-between;
-    min-height: 246px;
-    position: relative;
-    display: flex; justify-content: space-around;
-    margin: 0 0 45px; padding: 1px;
-    background: #fff;
-  `;
   return (
-    <Component>
+    <React.Fragment>
 
       <MainArticle>
 
@@ -77,7 +78,7 @@ const Card = ({component, item}) => {
 
         <Description>
           <TourName><a href="#offer">{formated.tour_name}</a></TourName>
-          <p><Rating value={formated.rating} /></p>
+          <div><Rating value={formated.rating} /></div>
           <p>{formated.description}</p>
 
           <DataList data={formated.meta} />
@@ -90,16 +91,12 @@ const Card = ({component, item}) => {
       <PricingMeta>
         <PricingGrid data={formated} />
       </PricingMeta>
-    </Component>
+    </React.Fragment>
   );
 };
 
 Card.propTypes = {
-  component: PropTypes.string,
   item: RawItemShape
-}
-Card.defaultProps = {
-  component: 'li'
 }
 
 export default Card;

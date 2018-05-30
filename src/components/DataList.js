@@ -63,7 +63,7 @@ class ExpandableList extends React.Component {
 
 
 const DataList = ({data}) => (
-  data && (<Wrapper>
+  data && (<Wrapper><tbody>
     {
       Object.keys(data)
         .filter(e => data[e])
@@ -75,7 +75,7 @@ const DataList = ({data}) => (
           );
         })
     }
-  </Wrapper>)
+  </tbody></Wrapper>)
 );
 
 DataList.propTypes = {
