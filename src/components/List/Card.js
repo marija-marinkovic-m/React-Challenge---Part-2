@@ -56,6 +56,9 @@ const Description = styled.div`
     margin: 0 0 7px;
   }
 `;
+const RatingWrap = styled.div`
+  margin: 0 0 7px;
+`;
 
 const TourName = styled.h4`
   margin: 0 0 3px; padding: 0;
@@ -105,7 +108,7 @@ const Card = ({item}) => {
 
         <Description>
           <TourName><a href="#offer">{formated.tour_name}</a></TourName>
-          <div><Rating value={formated.rating} /></div>
+          <RatingWrap><Rating value={formated.rating} /></RatingWrap>
           <p>{formated.description}</p>
 
           <DataList data={formated.meta} />
