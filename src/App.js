@@ -11,7 +11,7 @@ import { DEFAULT_PER_PAGE, DELAY_FOR_MIMICKING } from './constants';
 
 const Placeholder = styled.div`
   max-width: 860px;
-  margin: 20px auto 60px; padding: 12px;
+  margin: 0 auto; padding: 20px 12px 60px;
 `;
 
 const FiltersWrap = styled.div`
@@ -120,9 +120,11 @@ class App extends React.Component {
   }
 
   handleOnScroll = () => {
-    const docEl = document.documentElement;
+    const docEl = document.scrollingElement || document.documentElement;
     const offset = docEl.scrollTop + window.innerHeight;
     const height = docEl.offsetHeight;
+
+    console.log('offset height', offset, height);
 
     this.setState({loadMore: offset === height});
   }
