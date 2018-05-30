@@ -10,12 +10,11 @@ The [img component](https://github.com/marija-marinkovic-m/React-Challenge---Par
 Why? Here's this famous image for reference.
 ![styled](https://cdn-images-1.medium.com/max/1000/1*yBxZo9LNEjRaL7eKUBqRSA.png)
 
-
 ### Load more
-I thought it would be interesting to produce some kind of the infinite load illusion (so that again Image components can shine in all their glory). I achieved this by relying on App component's internal state. Upon receiving success response from API, App uses its' `loadedData` param as a bucket for small chunks of items to be displayed, and then it listens for scroll/resize events to decide whether it should catch more items to the bucket. Here, again, I added a [delay](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/84b56957d56cbe301b66f8d59ab308ef2bdd5d06/src/App.js#L82-L94) for the illusion to be complete.
+I thought it would be interesting to produce some kind of the infinite load illusion (so that again Image components can shine in all their glory). I achieved this by relying on App component's internal state. Upon receiving success response from API, App uses its' `loadedData` param as a bucket for small chunks of items to be displayed, and then it listens for scroll/resize events to decide whether it should catch more items to the bucket. Here, again, I added the [delay](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/84b56957d56cbe301b66f8d59ab308ef2bdd5d06/src/App.js#L82-L94) for the illusion to be complete.
 
 ### Sorting
-SortBy magic lives in this few simple lines, everything else is pure cosmetics: 
+_SortBy_ magic lives in this few simple lines, everything else is pure cosmetics: 
 ```javascript
 function sortBy(field, reverse, primer) {
 
@@ -26,7 +25,6 @@ function sortBy(field, reverse, primer) {
   reverse = !reverse ? 1 : -1;
 
   return function (a, b) {
-    // eslint-disable-next-line
     return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
   }
 }
@@ -35,7 +33,8 @@ export default sortBy;
 ```
 
 ### Other libraries
-As you can see, I avoid using additional modules/libraries, if I don't have to. Here I've used `currency-symbol-map` for convenience, and fetch polyfill for the precaution.
+As you can see, I avoid using additional modules/libraries, if I don't have to. Here I've used [`currency-symbol-map`](https://www.npmjs.com/package/currency-symbol-map) for convenience, and [fetch polyfill](https://www.npmjs.com/package/whatwg-fetch) as the precausion.
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
