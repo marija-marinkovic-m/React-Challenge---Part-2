@@ -124,8 +124,6 @@ class App extends React.Component {
     const offset = docEl.scrollTop + window.innerHeight;
     const height = docEl.offsetHeight;
 
-    console.log('offset height', offset, height);
-
     this.setState({loadMore: offset === height});
   }
 

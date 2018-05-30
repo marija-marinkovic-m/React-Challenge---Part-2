@@ -71,7 +71,7 @@ const TourName = styled.h4`
 const Card = ({item}) => {
   const formated = normalizeSearchResult(item);
 
-  // create placeholder images (this should be served in API response)
+  // @TEMP: create placeholder images (this should be served in API response)
   const tourImagePlacehoder = item.tour_image && item.tour_image.replace('928x680', '12x9');
   const mapImagePlaceholder = item.map_image && item.map_image.replace('928x400', '12x5');
 
