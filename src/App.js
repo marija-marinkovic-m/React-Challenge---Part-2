@@ -1,7 +1,6 @@
 import React from 'react';
 import List from './components/List';
 import Api from './core/api/service';
-import { normalizeSearchResult } from './core/api/normalizers';
 
 class App extends React.Component {
   _promise = null;
@@ -20,16 +19,16 @@ class App extends React.Component {
       isLoading: true
     }, () => {
       this._promise.promise
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong...');
-          }
-        })
+        // .then(response => {
+        //   if (response.ok) {
+        //     return response.json();
+        //   } else {
+        //     throw new Error('Something went wrong...');
+        //   }
+        // })
         .then(data => this.setState({
           data,
-          loadedData: data && data.length ? data.slice(0,1).map(normalizeSearchResult) : [],
+          loadedData: data && data.length ? data.slice(0,1) : [],
           isLoading: false
         }))
         .catch(error => this.setState({error, isLoading: false}));
@@ -47,8 +46,6 @@ class App extends React.Component {
     return (
       <div className="App">
         <List items={loadedData} />
-
-        <pre>{JSON.stringify(loadedData)}</pre>
       </div>
     );
   }
