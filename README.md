@@ -1,6 +1,6 @@
 ### Lazy load
 I :clap: how [Medium](https://medium.com) arranged progressive image loading, so I tried something similar here.
-Because API doesn't contain placeholder variant or some kind of the small size thumbnail, I've created two new fields on the item (while performing [normalization](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/84b56957d56cbe301b66f8d59ab308ef2bdd5d06/src/core/api/normalizers.js#L48-L49). Basically, the only thing important here is to perserve the ratio of the originals.  
+Because API doesn't contain placeholder variant or some kind of the small size thumbnail, I've created two new fields on the item (while [preparing data for presentation](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/84b56957d56cbe301b66f8d59ab308ef2bdd5d06/src/core/api/normalizers.js#L48-L49). Basically, the only thing important here is to perserve the ratio of the originals.  
 
 [Checker](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/util/imageChecker.js) utility function tries to fetch the source provided and resolves/rejects the result, for the sake of presentation I added this [delay](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/84b56957d56cbe301b66f8d59ab308ef2bdd5d06/src/util/imageChecker.js#L16-L19) so you don't miss the beauty of package :ribbon: and blurred entrance.
 
