@@ -1,8 +1,10 @@
 ### Lazy load
 I :clap: how [Medium](https://medium.com) arranged progressive image loading, so I tried something similar here.
-Because API doesn't contain placeholder variant or some kind of the small size thumbnail, I've created two new fields on the item (while [preparing data for presentation](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/core/api/normalizers.js#L48-L49)). Basically, the only thing important here is to perserve the ratio of the originals.  
+Because API doesn't contain placeholder variant or some kind of the small size thumbnail, I've created two new fields on the item (while [preparing data for presentation](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/core/api/normalizers.js#L48-L49)). Basically, the only thing important here is to perserve the ratio of the originals.
 
-[Checker](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/util/imageChecker.js) utility function tries to fetch the source provided and resolves/rejects the result. For the sake of presentation I added this [delay](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/util/imageChecker.js#L16-L19) so you don't miss the beauty the process :ribbon: and charm of those blurred entrances.
+I've also considered using [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), but since it's still experimental technology, I've decided to use this more conservative approach.
+
+[Checker](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/util/imageChecker.js) utility function tries to fetch the source provided and resolves/rejects the result. For the sake of presentation I added this [delay](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/util/imageChecker.js#L16-L19) so you don't miss the beauty of the process :ribbon: and charm of those blurred entrances.
 
 The [img component](https://github.com/marija-marinkovic-m/React-Challenge---Part-2/blob/master/src/components/ImgPreload.js) does the validation by implementing checker function and passing results using this fresh, simple technique for sharing code between React components - [Render Props](https://reactjs.org/docs/render-props.html).
 
